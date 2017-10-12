@@ -6,8 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Comment.destroy_all
 Company.destroy_all
+User.destroy_all
 
-10.times do |i|
+20.times do |i|
   Company.create(name: "Company seed #{i + 1}")
 end
