@@ -1,0 +1,20 @@
+<div class="text-center">
+  <h1>Dashboards</h1>
+  <hr>
+</div>
+<div class="row text-center">
+  <div class="col-md-4">
+    <h3>Compañias</h3>
+    <p><strong>Total:</strong> <%= @companies %></p>
+  </div>
+  <div class="col-md-4">
+    <h3>Reclamos</h3>
+    <p><strong>Total:</strong> <%= @comments %></p>
+  </div>
+  <div class="col-md-4">
+    <h3>Usuarios</h3>
+    <p><strong>Total:</strong> <%= @users %></p>
+  </div>
+</div>
+<br>
+<%= link_to 'Volver', companies_path %>

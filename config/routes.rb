@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   
+  get 'dashboards/index'
+
   devise_for :users, controllers: {
     registrations: 'users/registrations'
   }
-
+  
   resources :companies do
-    resources :comments
+    resources :comments, only: [:create, :destroy]
   end
 
   root 'companies#index'

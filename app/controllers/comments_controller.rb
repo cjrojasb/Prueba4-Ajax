@@ -4,7 +4,13 @@ class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
   def index
-    @comments = Comment.all
+
+    if params[:search_comment].present?
+      @comments = Comment.where("content ilike ?", "%#{params[:search_comment]}%")
+    else
+      @comments = Company.all
+    end
+
   end
 
   # GET /comments/1
@@ -24,13 +30,22 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(comment_params)
+    #@comment = Comment.new(comment_params)
+
+    @company = Company.find(params[:company_id])
+
+    @comments = @company.comments
+
+    @comment = @company.comments.build(comment_params)
+    @comment.user = current_user
 
     respond_to do |format|
       if @comment.save
+        format.js
         format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
         format.json { render :show, status: :created, location: @comment }
       else
+        format.js
         format.html { render :new }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
@@ -42,9 +57,11 @@ class CommentsController < ApplicationController
   def update
     respond_to do |format|
       if @comment.update(comment_params)
+        format.js
         format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
         format.json { render :show, status: :ok, location: @comment }
       else
+        format.js
         format.html { render :edit }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
@@ -56,6 +73,7 @@ class CommentsController < ApplicationController
   def destroy
     @comment.destroy
     respond_to do |format|
+      format.js
       format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
       format.json { head :no_content }
     end
@@ -69,6 +87,6 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:contenxt, :company_id, :user_id)
+      params.require(:comment).permit(:content, :company_id, :user_id)
     end
 end
